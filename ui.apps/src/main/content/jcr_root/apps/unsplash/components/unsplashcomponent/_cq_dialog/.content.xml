@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Multilink Dialog"
+    sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+        <items jcr:primaryType="nt:unstructured">
+            <column
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/container">
+                <items jcr:primaryType="nt:unstructured">
+                    <unsplash
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                        composite="{Boolean}true">
+                        <field
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/container"
+                            fieldLabel="Links"
+                            name="./navlinks">
+                            <items jcr:primaryType="nt:unstructured">
+                                <column
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/container"
+                                    name="./items">
+                                    <items jcr:primaryType="nt:unstructured">
+                                        <height
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="/libs/granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="Height"
+                                            name="./height"/>
+                                        <width
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="/libs/granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="Width"
+                                            name="./width"/>
+                                        <format
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                            fieldLabel="Format Selection"
+                                            name="./format">
+                                            <items jcr:primaryType="nt:unstructured">
+                                                <gif
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Gif"
+                                                    value="gif"/>
+                                                <png
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Png"
+                                                    value="png"/>
+                                                <jxr
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Jxr"
+                                                    value="jxr"/>
+                                                <jpg
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Jpg"
+                                                    value="jpg"/>
+                                            </items>
+                                        </format>
+                                        <crop
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                            fieldLabel="Crop Selection"
+                                            name="./crop">
+                                            <items jcr:primaryType="nt:unstructured">
+                                                <entropy
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Entropy"
+                                                    value="entropy"/>
+                                                <edges
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Edges"
+                                                    value="edges"/>
+                                                <faces
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Faces"
+                                                    value="faces"/>
+                                            </items>
+                                        </crop>
+                                        <quality
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="/libs/granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="Quality"
+                                            name="./quality"/>
+                                        <device
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                            fieldLabel="Device Selection"
+                                            name="./device">
+                                            <items jcr:primaryType="nt:unstructured">
+                                                <mobile
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Mobile"
+                                                    value="mobile"/>
+                                                <tablet
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Tablet"
+                                                    value="tablet"/>
+                                                <desktop
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Desktop"
+                                                    value="desktop"/>
+                                            </items>
+                                        </device>
+                                        <fit
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                            fieldLabel="Fit Selection"
+                                            name="./fit">
+                                            <items jcr:primaryType="nt:unstructured">
+                                                <clamp
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Clamp"
+                                                    value="clamp"/>
+                                                <clip
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Clip"
+                                                    value="clip"/>
+                                                <crop
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Crop"
+                                                    value="crop"/>
+                                                <facearea
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Facearea"
+                                                    value="facearea"/>
+                                                <fill
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Fill"
+                                                    value="fill"/>
+                                                <scale
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Scale"
+                                                    value="scale"/>
+                                            </items>
+                                        </fit>
+                                    </items>
+                                </column>
+                            </items>
+                        </field>
+                    </unsplash>
+                    <unsplashimg
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
+                        fieldLabel="Unsplash Image"
+                        name="./unsplashimg"/>
+                </items>
+            </column>
+        </items>
+    </content>
+</jcr:root>

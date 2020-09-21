@@ -1,0 +1,13 @@
+<sly data-sly-use.model="com.mysite.core.models.UnsplashModel">
+    <div class="unsplash-img">
+        <img src="${properties.fileReference}" alt="">
+    </div>
+    <div>${model.items}</div>
+    <!--<ul data-sly-list.key="${model.configurationMap}">
+        <li> KEY: ${key}, VALUE: ${model.configurationMap[key]}</li>
+    </ul>-->
+    <sly data-sly-list="${model.items}">
+        <sly data-sly-test.device="${item.device}"></sly>
+        ${device}
+    </sly>
+</sly>
