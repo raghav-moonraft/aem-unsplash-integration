@@ -8,6 +8,9 @@ import org.osgi.service.metatype.annotations.AttributeType;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
+/**
+ * Implementation of UnsplashService and UnsplashServiceConfig OSGI Configuration
+ */
 @Component(service = UnsplashService.class)
 @Designate(ocd = UnsplashServiceImpl.UnsplashServiceConfig.class)
 public class UnsplashServiceImpl implements UnsplashService {
@@ -17,30 +20,33 @@ public class UnsplashServiceImpl implements UnsplashService {
     private String clientId;
     private String limitPerPage;
 
+    /**
+     * OSGI Config for Unsplash Service
+     */
     @ObjectClassDefinition(name = "Unsplash OSGi Configuration", description = "OSGi Configuration For UnsplashService")
     @interface UnsplashServiceConfig {
         /**
-         * unsplashUrl
+         * unsplashUrl - list photos url
          *
          * @return String unsplashUrl
          */
-        @AttributeDefinition(name = "Unsplash Url", description = "Unsplash Url", type = AttributeType.STRING)
+        @AttributeDefinition(name = "Unsplash List Photos Url", description = "Unsplash List Photos Url", type = AttributeType.STRING)
         String unsplashUrl();
 
         /**
-         * unsplashSearchUrl
+         * unsplashSearchUrl search photos url
          * @return String unsplashSearchUrl
          */
         @AttributeDefinition(name = "Unsplash Search Url", description = "Unsplash Search Url", type = AttributeType.STRING)
         String unsplashSearchUrl();
         /**
-         * clientId
+         * clientId ClientId (API Key) generated from unsplash site
          * @return String clientId
          */
         @AttributeDefinition(name = "Client Id", description = "Client Id", type = AttributeType.STRING)
         String clientId();
         /**
-         * limitPerPage
+         * limitPerPage per page limit for search/list photos results
          * @return String limitPerPage
          */
         @AttributeDefinition(name = "Limit Per Page", description = "Limit Per Page", type = AttributeType.STRING)

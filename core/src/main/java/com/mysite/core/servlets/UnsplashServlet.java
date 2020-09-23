@@ -7,8 +7,6 @@ import javax.servlet.ServletException;
 
 import com.mysite.core.service.UnsplashService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.json.JSONException;
 import org.apache.sling.api.servlets.ServletResolverConstants;
@@ -23,7 +21,6 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.servlets.HttpConstants;
 import org.osgi.service.component.annotations.Component;
 
-import com.mysite.core.bean.UnsplashBean;
 import com.mysite.core.utils.UnsplashHtmlBuilder;
 import org.osgi.service.component.annotations.Reference;
 
@@ -36,13 +33,11 @@ public class UnsplashServlet extends SlingAllMethodsServlet {
 	@Reference
 	private UnsplashService service;
 
-	UnsplashHtmlBuilder htmlBuilder = new UnsplashHtmlBuilder();
+	private UnsplashHtmlBuilder htmlBuilder = new UnsplashHtmlBuilder();
 
 	@Override
 	protected void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
 			throws ServletException, IOException {
-
-		final ResourceResolver resourceResolver = request.adaptTo(ResourceResolver.class);
 
 		final String query = request.getRequestParameter("query").getString().trim();
 		final String pageNum = request.getRequestParameter("page").getString();
@@ -68,6 +63,12 @@ public class UnsplashServlet extends SlingAllMethodsServlet {
 		response.getWriter().write(responseHTML);
 	}
 
+	/**
+	 * Generate the URL
+	 * @param query search query value
+	 * @param pageNum page number for search/list photos result
+	 * @return URL
+	 */
 	private String extractUrl(final String query, final String pageNum) {
 		String url;
 

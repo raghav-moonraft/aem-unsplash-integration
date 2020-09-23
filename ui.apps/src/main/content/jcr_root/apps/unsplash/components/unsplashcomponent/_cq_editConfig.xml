@@ -15,7 +15,8 @@
                 sling:resourceType="unsplash/components/image"
                 imageCrop=""
                 imageMap=""
-                imageRotate=""/>
+                imageRotate=""
+                author=""/>
         </image>
     </cq:dropTargets>
 </jcr:root>

@@ -8,10 +8,21 @@ import org.slf4j.LoggerFactory;
 
 import com.mysite.core.bean.UnsplashBean;
 
+/**
+ * HtmlBuilder. The purpose of this class is to build Coral-Card html for unsplash images. This html is rendered when
+ * author selects Unsplash from dropdown list in assets and display the thumb images that are retrieved from Unsplash.com
+ * as a JSON response via rest api call.
+ */
 public class UnsplashHtmlBuilder {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(UnsplashHtmlBuilder.class);
-	
+
+	/**
+	 * Create coral-card html from JSON Response
+	 * @param response
+	 * @return coral card HTML
+	 * @throws JSONException
+	 */
 	public String getHTMLResponse(String response) throws JSONException {
 		String html = null;
 		UnsplashBean beanResponse = new UnsplashBean();
@@ -25,10 +36,9 @@ public class UnsplashHtmlBuilder {
 		    int imageHeight = object.getInt("height");
 		    String username = object.getJSONObject("user").getString("name");
 		    
-			htmlBuilder.append("<coral-card class=\"editor-Card-asset card-asset cq-draggable u-coral-openHand\" draggable=\"true\"  data-path=\"" + imageSrc +
-					"data-asset-group=\"media\" data-type=\"Images\" data-param=\"{&#34;./imageMap@Delete&#34;:&#34;&#34;,&#34;./imageCrop@Delete&#34;:&#34;&#34;,&#34;./imageRotate@Delete&#34;:&#34;&#34;}\" data-asset-mimetype=\"image/png\">");
+			htmlBuilder.append("<coral-card class=\"editor-Card-asset card-asset cq-draggable u-coral-openHand\" draggable=\"true\"  data-author=\"" + username + "\"" + "data-path=\"" + imageSrc + "&author=" + username + "\"" + "data-asset-group=\"media\" data-type=\"Images\" data-param=\"{&#34;./imageMap@Delete&#34;:&#34;&#34;,&#34;./imageCrop@Delete&#34;:&#34;&#34;,&#34;./imageRotate@Delete&#34;:&#34;&#34;}\" data-asset-mimetype=\"image/png\">");
 			htmlBuilder.append("<coral-card-asset>\r\n" + 
-					"        <img class=\"cq-dd-image\" src=\"" + imageSrc + "alt=\"" + title + ">\r\n" + 
+					"        <img class=\"cq-dd-image\" src=\"" + imageSrc + "alt=\"" + title + ">\r\n" + "data-author=\"" + username + "\"" +
 					"    </coral-card-asset>");
 			htmlBuilder.append("<coral-card-content>\r\n" + 
 					"        <coral-card-title class=\"foundation-collection-item-title\" title=\"" + title + ">" + title + "</coral-card-title>\r\n" + 
