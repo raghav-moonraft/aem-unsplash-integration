@@ -1,6 +1,9 @@
 package com.mysite.core.models;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
@@ -8,6 +11,9 @@ import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 
 import javax.annotation.PostConstruct;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.*;
 
 /**
@@ -20,9 +26,9 @@ public class UnsplashModel {
     /**
      * List of Image Configurations
      */
-    private final List<ImageConfigs> items = new ArrayList<>();
+    private final List<String> items = new ArrayList<>();
 
-    public List<ImageConfigs> getItems() {
+    public List<String> getItems() {
         return items;
     }
 
@@ -33,123 +39,45 @@ public class UnsplashModel {
     private SlingHttpServletRequest request;
 
     @PostConstruct
-    public void activate() {
+    public void activate() throws URISyntaxException {
 
-        final Object fileReference = currentResource.getValueMap().get("fileReference");
-        String author = StringUtils.EMPTY;
-        if (fileReference != null) {
-            author = String.valueOf(fileReference).split("author=")[1];
-        }
+        final String fileReference = String.valueOf(currentResource.getValueMap().get("fileReference"));
+        String uri = fileReference.split("\\?")[0];
+        final Map<String, String> queryParams = getQueryParamsMap(fileReference);
         final Resource resource = currentResource.getChild("unsplash");
         if (resource != null) {
             final Iterable<Resource> resourceChildren = resource.getChildren();
             for(Resource res: resourceChildren) {
                 final ValueMap valueMap = res.getValueMap();
-                ImageConfigs config = new ImageConfigs();
-                config.setDevice(String.valueOf(valueMap.get("device")));
-                config.setFormat(String.valueOf(valueMap.get("format")));
-                config.setHeight(String.valueOf(valueMap.get("height")));
-                config.setFit(String.valueOf(valueMap.get("fit")));
-                config.setCrop(String.valueOf(valueMap.get("crop")));
-                config.setWidth(String.valueOf(valueMap.get("width")));
-                config.setQuality(String.valueOf(valueMap.get("quality")));
-                config.setAuthor(author);
-                items.add(config);
+                queryParams.put("fm", String.valueOf(valueMap.get("format")));
+                queryParams.put("h", String.valueOf(valueMap.get("height")));
+                queryParams.put("fit", String.valueOf(valueMap.get("fit")));
+                queryParams.put("crop", String.valueOf(valueMap.get("crop")));
+                queryParams.put("w", String.valueOf(valueMap.get("width")));
+                queryParams.put("q", String.valueOf(valueMap.get("quality")));
+                final URI buildUrl = buildUrl(uri, queryParams);
+                items.add(buildUrl.toString());
             }
         }
     }
 
-    /**
-     * Bean class for holding Image Configuration data
-     */
-    public class ImageConfigs {
-
-        // Device (Can be either of Mobile, Tablet and Desktop)
-        private String device;
-
-        // Image Format (JPG, PNG etc)
-        private String format;
-
-        // Height of Image
-        private String height;
-
-        // Image Fit
-        private String fit;
-
-        // Image Crop
-        private String crop;
-
-        // Width of Image
-        private String width;
-
-        // Image quality
-        private String quality;
-
-        // Image author name from Unsplash
-        private String author;
-
-        public String getAuthor() {
-            return author;
+    private URI buildUrl(final String uri, final Map<String, String> queryParams) throws URISyntaxException {
+        final URIBuilder uriBuilder = new URIBuilder(uri);
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        for (Map.Entry<String,String> query : queryParams.entrySet()) //using map.entrySet() for iteration
+        {
+            BasicNameValuePair nameValuePair = new BasicNameValuePair(query.getKey(), query.getValue());
+            nameValuePairs.add(nameValuePair);
         }
+        return uriBuilder.addParameters(nameValuePairs).build();
+    }
 
-        public void setAuthor(String author) {
-            this.author = author;
+    private Map<String, String> getQueryParamsMap(String fileReference) throws URISyntaxException {
+        List<NameValuePair> params = URLEncodedUtils.parse(new URI(fileReference), Charset.forName("UTF-8"));
+        final Map<String, String> queryParams = new HashMap<>();
+        for (NameValuePair param : params) {
+            queryParams.put(param.getName(), param.getValue());
         }
-
-        public String getDevice() {
-            return device;
-        }
-
-        public void setDevice(String device) {
-            this.device = device;
-        }
-
-        public String getFormat() {
-            return format;
-        }
-
-        public void setFormat(String format) {
-            this.format = format;
-        }
-
-        public String getHeight() {
-            return height;
-        }
-
-        public void setHeight(String height) {
-            this.height = height;
-        }
-
-        public String getFit() {
-            return fit;
-        }
-
-        public void setFit(String fit) {
-            this.fit = fit;
-        }
-
-        public String getCrop() {
-            return crop;
-        }
-
-        public void setCrop(String crop) {
-            this.crop = crop;
-        }
-
-        public String getWidth() {
-            return width;
-        }
-
-        public void setWidth(String width) {
-            this.width = width;
-        }
-
-        public String getQuality() {
-            return quality;
-        }
-
-        public void setQuality(String quality) {
-            this.quality = quality;
-        }
+        return queryParams;
     }
 }

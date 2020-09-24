@@ -1,12 +1,10 @@
 <sly data-sly-use.model="com.mysite.core.models.UnsplashModel">
     <div class="unsplash-img">
-        <img src="${properties.fileReference}" alt="">
-    </div>
-    <sly data-sly-list="${model.items}">
         <picture>
-            <source media="(min-width:${item.width}px)" srcset="${properties.fileReference}">
-            <img src="${properties.fileReference}" alt="Flowers" style="width:${item.width @context='unsafe'}px;height:${item.height @context='unsafe'}px;">
-            ${item.author}
+            <sly data-sly-list="${model.items}">
+                <source media="(min-width:200px)" srcset="${item}">
+            </sly>
+            <img src="${properties.fileReference}" alt="">
         </picture>
-    </sly>
+    </div>
 </sly>
