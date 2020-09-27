@@ -1,10 +1,15 @@
+<sly data-sly-use.commonsTemplates="core/wcm/components/commons/v1/templates.html"
+     data-sly-call="${commonsTemplates.placeholder @ isEmpty=true}"></sly>
 <sly data-sly-use.model="com.mysite.core.models.UnsplashModel">
     <div class="unsplash-img">
         <picture>
-            <sly data-sly-list="${model.items}">
-                <source media="(min-width:200px)" srcset="${item}">
+            <sly data-sly-test.object = "${model.item}">
+                <sly data-sly-list.keyname="${model.item.urls}">
+                    <source media="(min-width:${keyname}px)" srcset="${model.item.urls[keyname]}">
+                </sly>
+                <img src="${properties.fileReference}" alt="${config.author}">
+                <span>Photo by <a href="${properties.fileReference}">${object.author}</a> on <a href="https://unsplash.com/?utm_source=your_app_name&utm_medium=referral">Unsplash</a></span>
             </sly>
-            <img src="${properties.fileReference}" alt="">
         </picture>
     </div>
 </sly>

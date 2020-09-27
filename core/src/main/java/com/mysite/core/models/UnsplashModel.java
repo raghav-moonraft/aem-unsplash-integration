@@ -15,6 +15,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Sling Model for Unsplash Integration. This model is responsible for fetching all image related information that
@@ -26,10 +27,17 @@ public class UnsplashModel {
     /**
      * List of Image Configurations
      */
-    private final List<String> items = new ArrayList<>();
+    private final Item item = new Item();
 
-    public List<String> getItems() {
-        return items;
+    private final Map <String, Item> itemMap = new TreeMap<>();
+
+    public Map<String, Item> getItemMap() {
+        return itemMap;
+    }
+
+    public Item getItem() {
+
+        return item;
     }
 
     @SlingObject
@@ -42,9 +50,11 @@ public class UnsplashModel {
     public void activate() throws URISyntaxException {
 
         final String fileReference = String.valueOf(currentResource.getValueMap().get("fileReference"));
-        String uri = fileReference.split("\\?")[0];
+        final String uri = fileReference.split("\\?")[0];
         final Map<String, String> queryParams = getQueryParamsMap(fileReference);
         final Resource resource = currentResource.getChild("unsplash");
+        item.setAuthor(queryParams.get("author"));
+        final Map<Integer, String> urls = new TreeMap<>(Collections.reverseOrder());
         if (resource != null) {
             final Iterable<Resource> resourceChildren = resource.getChildren();
             for(Resource res: resourceChildren) {
@@ -56,8 +66,9 @@ public class UnsplashModel {
                 queryParams.put("w", String.valueOf(valueMap.get("width")));
                 queryParams.put("q", String.valueOf(valueMap.get("quality")));
                 final URI buildUrl = buildUrl(uri, queryParams);
-                items.add(buildUrl.toString());
+                urls.put(Integer.valueOf(queryParams.get("w")), buildUrl.toString());
             }
+            item.setUrls(urls);
         }
     }
 
@@ -79,5 +90,27 @@ public class UnsplashModel {
             queryParams.put(param.getName(), param.getValue());
         }
         return queryParams;
+    }
+
+    public class Item {
+
+        private Map<Integer, String> urls = new HashMap<>();
+        private String author;
+
+        public Map<Integer, String> getUrls() {
+            return urls;
+        }
+
+        public void setUrls(Map<Integer, String> urls) {
+            this.urls = urls;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public void setAuthor(String author) {
+            this.author = author;
+        }
     }
 }
