@@ -19,6 +19,7 @@ public class UnsplashServiceImpl implements UnsplashService {
     private String unsplashSearchUrl;
     private String clientId;
     private String limitPerPage;
+    private String appName;
 
     /**
      * OSGI Config for Unsplash Service
@@ -51,6 +52,13 @@ public class UnsplashServiceImpl implements UnsplashService {
          */
         @AttributeDefinition(name = "Limit Per Page", description = "Limit Per Page", type = AttributeType.STRING)
         String limitPerPage();
+
+        /**
+         * App Name for your account used at the time og app key creation on unsplash site
+         * @return String app Name
+         */
+        @AttributeDefinition(name = "App Name", description = "App Name", type = AttributeType.STRING)
+        String appName();
     }
 
     @Activate
@@ -60,6 +68,7 @@ public class UnsplashServiceImpl implements UnsplashService {
         this.unsplashSearchUrl = config.unsplashSearchUrl();
         this.clientId = config.clientId();
         this.limitPerPage = config.limitPerPage();
+        this.appName = config.appName();
 
     }
 
@@ -81,5 +90,10 @@ public class UnsplashServiceImpl implements UnsplashService {
     @Override
     public String getLimitPerPage() {
         return limitPerPage;
+    }
+
+    @Override
+    public String getAppName() {
+        return appName;
     }
 }

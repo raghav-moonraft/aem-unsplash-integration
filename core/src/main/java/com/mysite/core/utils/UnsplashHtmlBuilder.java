@@ -35,8 +35,9 @@ public class UnsplashHtmlBuilder {
 		    int imageWidth = object.getInt("width");
 		    int imageHeight = object.getInt("height");
 		    String username = object.getJSONObject("user").getString("name");
+		    String userProfile = object.getJSONObject("user").getJSONObject("links").getString("html");
 		    
-			htmlBuilder.append("<coral-card class=\"editor-Card-asset card-asset cq-draggable u-coral-openHand\" draggable=\"true\"  data-author=\"" + username + "\"" + "data-path=\"" + imageSrc + "&author=" + username + "\"" + "data-asset-group=\"media\" data-type=\"Images\" data-param=\"{&#34;./imageMap@Delete&#34;:&#34;&#34;,&#34;./imageCrop@Delete&#34;:&#34;&#34;,&#34;./imageRotate@Delete&#34;:&#34;&#34;}\" data-asset-mimetype=\"image/png\">");
+			htmlBuilder.append("<coral-card class=\"editor-Card-asset card-asset cq-draggable u-coral-openHand\" draggable=\"true\"  data-author=\"" + username + "\"" + "data-path=\"" + imageSrc + "&author=" + username + "&profile=" + userProfile + "\"" + "data-asset-group=\"media\" data-type=\"Images\" data-param=\"{&#34;./imageMap@Delete&#34;:&#34;&#34;,&#34;./imageCrop@Delete&#34;:&#34;&#34;,&#34;./imageRotate@Delete&#34;:&#34;&#34;}\" data-asset-mimetype=\"image/png\">");
 			htmlBuilder.append("<coral-card-asset>\r\n" + 
 					"        <img class=\"cq-dd-image\" src=\"" + imageSrc + "alt=\"" + title + ">\r\n" + "data-author=\"" + username + "\"" +
 					"    </coral-card-asset>");

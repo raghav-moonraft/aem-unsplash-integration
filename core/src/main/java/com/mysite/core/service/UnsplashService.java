@@ -29,4 +29,10 @@ public interface UnsplashService {
      */
     String getLimitPerPage();
 
+    /**
+     * Return the App Name used at time of app key creation
+     * @return app name
+     */
+    String getAppName();
+
 }

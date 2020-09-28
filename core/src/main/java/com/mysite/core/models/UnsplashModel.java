@@ -1,5 +1,6 @@
 package com.mysite.core.models;
 
+import com.mysite.core.service.UnsplashService;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -8,6 +9,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 
 import javax.annotation.PostConstruct;
@@ -46,6 +48,9 @@ public class UnsplashModel {
     @SlingObject
     private SlingHttpServletRequest request;
 
+    @OSGiService
+    private UnsplashService service;
+
     @PostConstruct
     public void activate() throws URISyntaxException {
 
@@ -54,6 +59,8 @@ public class UnsplashModel {
         final Map<String, String> queryParams = getQueryParamsMap(fileReference);
         final Resource resource = currentResource.getChild("unsplash");
         item.setAuthor(queryParams.get("author"));
+        item.setProfileUrl(queryParams.get("profile"));
+        item.setAppName(service.getAppName());
         final Map<Integer, String> urls = new TreeMap<>(Collections.reverseOrder());
         if (resource != null) {
             final Iterable<Resource> resourceChildren = resource.getChildren();
@@ -96,6 +103,24 @@ public class UnsplashModel {
 
         private Map<Integer, String> urls = new HashMap<>();
         private String author;
+        private String profileUrl;
+        private String appName;
+
+        public String getAppName() {
+            return appName;
+        }
+
+        public void setAppName(String appName) {
+            this.appName = appName;
+        }
+
+        public String getProfileUrl() {
+            return profileUrl;
+        }
+
+        public void setProfileUrl(String profileUrl) {
+            this.profileUrl = profileUrl;
+        }
 
         public Map<Integer, String> getUrls() {
             return urls;

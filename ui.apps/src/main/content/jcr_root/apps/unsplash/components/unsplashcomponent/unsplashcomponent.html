@@ -8,7 +8,9 @@
                     <source media="(min-width:${keyname}px)" srcset="${model.item.urls[keyname]}">
                 </sly>
                 <img src="${properties.fileReference}" alt="${config.author}">
-                <span>Photo by <a href="${properties.fileReference}">${object.author}</a> on <a href="https://unsplash.com/?utm_source=your_app_name&utm_medium=referral">Unsplash</a></span>
+                <div>
+                    <span>Photo by <a href="${object.profileUrl}">${object.author}</a> on <a href="https://unsplash.com/?utm_source=${object.appName}&utm_medium=referral">Unsplash</a></span>
+                </div>
             </sly>
         </picture>
     </div>
