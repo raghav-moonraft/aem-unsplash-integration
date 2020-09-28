@@ -13,9 +13,12 @@ import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 
 import javax.annotation.PostConstruct;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -52,15 +55,17 @@ public class UnsplashModel {
     private UnsplashService service;
 
     @PostConstruct
-    public void activate() throws URISyntaxException {
+    public void activate() throws URISyntaxException, UnsupportedEncodingException {
 
         final String fileReference = String.valueOf(currentResource.getValueMap().get("fileReference"));
         final String uri = fileReference.split("\\?")[0];
         final Map<String, String> queryParams = getQueryParamsMap(fileReference);
         final Resource resource = currentResource.getChild("unsplash");
-        item.setAuthor(queryParams.get("author"));
+        URLDecoder.decode(queryParams.get("author"), StandardCharsets.UTF_8.name());
+        item.setAuthor(URLDecoder.decode(queryParams.get("author"), StandardCharsets.UTF_8.name()));
         item.setProfileUrl(queryParams.get("profile"));
         item.setAppName(service.getAppName());
+        item.setUri(uri);
         final Map<Integer, String> urls = new TreeMap<>(Collections.reverseOrder());
         if (resource != null) {
             final Iterable<Resource> resourceChildren = resource.getChildren();
@@ -105,6 +110,15 @@ public class UnsplashModel {
         private String author;
         private String profileUrl;
         private String appName;
+        private String uri;
+
+        public String getUri() {
+            return uri;
+        }
+
+        public void setUri(String uri) {
+            this.uri = uri;
+        }
 
         public String getAppName() {
             return appName;
