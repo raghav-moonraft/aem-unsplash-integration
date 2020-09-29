@@ -137,6 +137,11 @@
                                                     value="scale"/>
                                             </items>
                                         </fit>
+                                        <alttext
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="/libs/granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="Alternate Text"
+                                            name="./alttext"/>
                                     </items>
                                 </column>
                             </items>
