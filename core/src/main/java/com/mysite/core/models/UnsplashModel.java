@@ -61,8 +61,10 @@ public class UnsplashModel {
         final String uri = fileReference.split("\\?")[0];
         final Map<String, String> queryParams = getQueryParamsMap(fileReference);
         final Resource resource = currentResource.getChild("unsplash");
-        URLDecoder.decode(queryParams.get("author"), StandardCharsets.UTF_8.name());
-        item.setAuthor(URLDecoder.decode(queryParams.get("author"), StandardCharsets.UTF_8.name()));
+        if (!queryParams.isEmpty() && queryParams.get("author") != null) {
+            URLDecoder.decode(queryParams.get("author"), StandardCharsets.UTF_8.name());
+            item.setAuthor(URLDecoder.decode(queryParams.get("author"), StandardCharsets.UTF_8.name()));
+        }
         item.setProfileUrl(queryParams.get("profile"));
         item.setAppName(service.getAppName());
         item.setUri(uri);
