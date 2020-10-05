@@ -7,7 +7,7 @@
                 <sly data-sly-list.keyname="${model.item.urls}">
                     <source media="(min-width:${keyname}px)" srcset="${model.item.urls[keyname]}">
                 </sly>
-                <img src="${item.uri}" alt="${config.author}">
+                <img src="${object.uri}" alt="${object.altText}">
                 <div>
                     <span>Photo by <a href="${object.profileUrl}">${object.author}</a> on <a href="https://unsplash.com/?utm_source=${object.appName}&utm_medium=referral">Unsplash</a></span>
                 </div>

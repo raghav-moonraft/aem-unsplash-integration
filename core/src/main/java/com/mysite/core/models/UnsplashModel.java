@@ -20,7 +20,6 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Sling Model for Unsplash Integration. This model is responsible for fetching all image related information that
@@ -30,18 +29,11 @@ import java.util.stream.Collectors;
 public class UnsplashModel {
 
     /**
-     * List of Image Configurations
+     * Custom Object which holds the image related configured data.
      */
     private final Item item = new Item();
 
-    private final Map <String, Item> itemMap = new TreeMap<>();
-
-    public Map<String, Item> getItemMap() {
-        return itemMap;
-    }
-
     public Item getItem() {
-
         return item;
     }
 
@@ -73,6 +65,7 @@ public class UnsplashModel {
             final Iterable<Resource> resourceChildren = resource.getChildren();
             for(Resource res: resourceChildren) {
                 final ValueMap valueMap = res.getValueMap();
+                item.setAltText(String.valueOf(valueMap.get("alttext")));
                 queryParams.put("fm", String.valueOf(valueMap.get("format")));
                 queryParams.put("h", String.valueOf(valueMap.get("height")));
                 queryParams.put("fit", String.valueOf(valueMap.get("fit")));
@@ -86,6 +79,13 @@ public class UnsplashModel {
         }
     }
 
+    /**
+     * This method builds URL based on actual url and the new query params value from dialog
+     * @param uri original url
+     * @param queryParams updated query params
+     * @return new url
+     * @throws URISyntaxException
+     */
     private URI buildUrl(final String uri, final Map<String, String> queryParams) throws URISyntaxException {
         final URIBuilder uriBuilder = new URIBuilder(uri);
         List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -97,6 +97,12 @@ public class UnsplashModel {
         return uriBuilder.addParameters(nameValuePairs).build();
     }
 
+    /**
+     * Extracts queryParams from the original url
+     * @param fileReference url value persisted in JCR
+     * @return queryparams map
+     * @throws URISyntaxException
+     */
     private Map<String, String> getQueryParamsMap(String fileReference) throws URISyntaxException {
         List<NameValuePair> params = URLEncodedUtils.parse(new URI(fileReference), Charset.forName("UTF-8"));
         final Map<String, String> queryParams = new HashMap<>();
@@ -108,11 +114,38 @@ public class UnsplashModel {
 
     public class Item {
 
+        /**
+         *  Map containing the new urls(value) corresponding to their width(key).
+         */
         private Map<Integer, String> urls = new HashMap<>();
+        /**
+         * Name of Photographer who owns the image.
+         */
         private String author;
+        /**
+         * profile url of photographer.
+         */
         private String profileUrl;
+        /**
+         * App Name using which app key was generated.
+         */
         private String appName;
+        /**
+         * Url without query params
+         */
         private String uri;
+        /**
+         * Alternate Text
+         */
+        private String altText;
+
+        public String getAltText() {
+            return altText;
+        }
+
+        public void setAltText(String altText) {
+            this.altText = altText;
+        }
 
         public String getUri() {
             return uri;
