@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysite.core.bean.UnsplashBean;
-import sun.nio.cs.UTF_8;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
